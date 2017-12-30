@@ -8,7 +8,7 @@ Define `async` routes:
 
 ```javascript
 const express = require('express')
-const { asyncRoute, respond } = require('express-extensions')
+const { asyncRouter, respond } = require('express-extensions')
 const getAccountInfo = require('./getAccountInfo')
 
 const app = express()
