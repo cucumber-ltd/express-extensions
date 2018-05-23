@@ -25,6 +25,9 @@ module.exports = class WebServer {
     this._openSockets = new Set()
 
     this._server.on('connection', socket => {
+      if(this._stopping)
+        return socket.destroy()
+
       this._openSockets.add(socket)
       socket.on('close', () => {
         this._openSockets.delete(socket)
@@ -34,12 +37,16 @@ module.exports = class WebServer {
   }
 
   async stop() {
+    this._stopping = true
     await Promise.all([...this._openSockets].map(socket => {
-      process.nextTick(() => socket.destroy())
+      if(socket.destroyed)
+        return Promise.resolve()
+
       return new Promise(resolve => {
         socket.once('close', () => {
           resolve()
         })
+        socket.destroy()
       })
     }))
     const close = promisify(this._server.close.bind(this._server))
