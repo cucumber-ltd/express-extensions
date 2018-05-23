@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.2",
     "util.promisify": "^1.0.0"
+  },
+  "peerDependencies": {
+    "express": "^4.16.3"
   }
 }
